@@ -4,5 +4,6 @@ import userController from "../controller/userController.js";
 const publicRouter = new express.Router();
 
 publicRouter.post("/api/register", userController.register);
+publicRouter.post("/api/login", userController.login);
 
 export { publicRouter };
