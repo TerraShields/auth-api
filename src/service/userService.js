@@ -1,13 +1,14 @@
 import {
 	userLoginValidation,
 	userRegisterValidation,
+	userUpdateValidation,
 } from "../validation/userValidation.js";
 import { validation } from "../validation/validation.js";
 import { ResponseError } from "../error/responseError.js";
 import { prismaClient } from "../app/database.js";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
-import { generateToken } from "../app/generateToken.js";
+import { generateToken } from "../app/tokenHandler.js";
 
 const register = async (req) => {
 	req = validation(userRegisterValidation, req);
@@ -71,4 +72,44 @@ const login = async (req) => {
 	};
 };
 
-export default { register, login };
+const update = async (userId, req) => {
+	req = validation(userUpdateValidation, req);
+
+	let data = {};
+
+	if (req.name) {
+		data.name = req.name;
+	}
+
+	if (req.email) {
+		const checkUser = await prismaClient.user.count({
+			where: {
+				email: req.email,
+			},
+		});
+
+		if (checkUser > 0) {
+			throw new ResponseError(400, "Email already use");
+		}
+
+		data.email = req.email;
+	}
+
+	if (req.password) {
+		data.password = await bcrypt.hash(req.password, 10);
+	}
+
+	return prismaClient.user.update({
+		where: {
+			user_id: userId,
+		},
+		data: data,
+		select: {
+			user_id: true,
+			name: true,
+			email: true,
+		},
+	});
+};
+
+export default { register, login, update };

@@ -12,3 +12,7 @@ export const generateToken = (user_id) => {
 		expiresIn: process.env.JWT_EXPIRES,
 	});
 };
+
+export const validateToken = (token) => {
+	return jwt.verify(token, process.env.JWT_SECRET);
+};

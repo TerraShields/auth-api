@@ -21,4 +21,21 @@ const userLoginValidation = Joi.object({
 	password: Joi.string().min(6).required(),
 });
 
-export { userRegisterValidation, userLoginValidation };
+const userUpdateValidation = Joi.object({
+	email: Joi.string().email().max(100),
+	name: Joi.string().max(50),
+	password: Joi.string().min(6),
+	password_confirmation: Joi.string().min(6),
+})
+	.custom((value, helpers) => {
+		if (value.password !== value.password_confirmation) {
+			return helpers.error("password.different");
+		}
+		return value;
+	})
+	.messages({
+		"password.different":
+			"Password and password confirmation are different value",
+	});
+
+export { userRegisterValidation, userLoginValidation, userUpdateValidation };
