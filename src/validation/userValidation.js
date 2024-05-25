@@ -35,7 +35,7 @@ const userUpdateValidation = Joi.object({
 	})
 	.messages({
 		"password.different":
-			"Password and password confirmation are different value",
+			"Password and password confirmation has different value",
 	});
 
 export { userRegisterValidation, userLoginValidation, userUpdateValidation };
