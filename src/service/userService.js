@@ -36,7 +36,7 @@ const register = async (req) => {
 		return { email, name, user_id };
 	});
 
-	return data;
+	return data[0];
 };
 
 const login = async (req) => {

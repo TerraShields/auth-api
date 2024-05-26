@@ -29,7 +29,7 @@ const login = async (req, res, next) => {
 const getUser = async (req, res, next) => {
 	try {
 		res.status(200).json({
-			data: req.user,
+			data: req.user[0],
 		});
 	} catch (error) {
 		next(error);
