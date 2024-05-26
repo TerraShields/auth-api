@@ -5,6 +5,7 @@ const register = async (req, res, next) => {
 		req = req.body;
 		const result = await userService.register(req);
 		res.status(201).json({
+			message: "success",
 			data: result,
 		});
 	} catch (error) {
@@ -17,6 +18,7 @@ const login = async (req, res, next) => {
 		req = req.body;
 		const result = await userService.login(req);
 		res.status(200).json({
+			message: "success",
 			data: result,
 		});
 	} catch (error) {
@@ -36,7 +38,7 @@ const getUser = async (req, res, next) => {
 
 const update = async (req, res, next) => {
 	try {
-		const userId = req.user.user_id;
+		const userId = req.user[0].user_id;
 		req = req.body;
 		const result = await userService.update(userId, req);
 		res.status(200).json({
@@ -47,4 +49,17 @@ const update = async (req, res, next) => {
 	}
 };
 
-export default { register, login, getUser, update };
+const changePassword = async (req, res, next) => {
+	try {
+		const userId = req.user[0].user_id;
+		req = req.body;
+		const result = await userService.changePassword(userId, req);
+		res.status(200).json({
+			message: "Success update password",
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export default { register, login, getUser, update, changePassword };

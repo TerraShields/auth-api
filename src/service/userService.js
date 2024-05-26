@@ -1,68 +1,62 @@
 import {
+	changePasswordValidation,
 	userLoginValidation,
 	userRegisterValidation,
 	userUpdateValidation,
 } from "../validation/userValidation.js";
 import { validation } from "../validation/validation.js";
 import { ResponseError } from "../error/responseError.js";
-import { prismaClient } from "../app/database.js";
 import bcrypt from "bcrypt";
-import { nanoid } from "nanoid";
 import { generateToken } from "../app/tokenHandler.js";
+import { userCollection } from "../app/firestore.js";
+import { v4 as uuid } from "uuid";
 
 const register = async (req) => {
 	req = validation(userRegisterValidation, req);
 
-	const userCheck = await prismaClient.user.findUnique({
-		where: {
-			email: req.email,
-		},
-	});
+	const userCheck = await userCollection.where("email", "==", req.email).get();
 
-	if (userCheck !== null) {
+	if (!userCheck.empty) {
 		throw new ResponseError(400, "Email already use");
 	}
 
+	req.user_id = `user-${uuid()}`;
 	req.password = await bcrypt.hash(req.password, 10);
-	const userId = `user_${nanoid(16)}`;
+	req.address = "";
+	req.image = "";
+	delete req.password_confirmation;
 
-	return prismaClient.user.create({
-		data: {
-			user_id: userId,
-			email: req.email,
-			name: req.name,
-			password: req.password,
-		},
-		select: {
-			user_id: true,
-			name: true,
-			email: true,
-		},
+	await userCollection.doc(req.user_id).set(req);
+	const getUser = await userCollection
+		.where("user_id", "==", req.user_id)
+		.get();
+
+	const data = getUser.docs.map((doc) => {
+		const { email, name, user_id } = doc.data();
+		return { email, name, user_id };
 	});
+
+	return data;
 };
 
 const login = async (req) => {
 	req = validation(userLoginValidation, req);
 
-	const getUser = await prismaClient.user.findUnique({
-		where: {
-			email: req.email,
-		},
-		select: {
-			user_id: true,
-			email: true,
-			password: true,
-		},
-	});
+	let getUser = await userCollection
+		.where("email", "==", req.email)
+		.limit(1)
+		.get();
 
-	if (!getUser) {
-		throw new ResponseError(401, "Username or password wrong");
+	if (getUser.empty) {
+		throw new ResponseError(401, "Email or password wrong");
 	}
+
+	getUser = getUser.docs[0].data();
 
 	const isPasswordValid = await bcrypt.compare(req.password, getUser.password);
 
 	if (!isPasswordValid) {
-		throw new ResponseError(401, "Username or password wrong");
+		throw new ResponseError(401, "Email or password wrong");
 	}
 
 	const token = generateToken(getUser.user_id);
@@ -77,39 +71,20 @@ const update = async (userId, req) => {
 
 	let data = {};
 
+	const user = await userCollection.doc(userId).get();
+
 	if (req.name) {
-		data.name = req.name;
 	}
+};
 
-	if (req.email) {
-		const checkUser = await prismaClient.user.count({
-			where: {
-				email: req.email,
-			},
-		});
+const changePassword = async (userId, req) => {
+	req = validation(changePasswordValidation, req);
 
-		if (checkUser > 0) {
-			throw new ResponseError(400, "Email already use");
-		}
+	req.password = await bcrypt.hash(req.password, 10);
 
-		data.email = req.email;
-	}
-
-	if (req.password) {
-		data.password = await bcrypt.hash(req.password, 10);
-	}
-
-	return prismaClient.user.update({
-		where: {
-			user_id: userId,
-		},
-		data: data,
-		select: {
-			user_id: true,
-			name: true,
-			email: true,
-		},
+	await userCollection.doc(userId).update({
+		password: req.password,
 	});
 };
 
-export default { register, login, update };
+export default { register, login, update, changePassword };

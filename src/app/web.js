@@ -1,7 +1,7 @@
 import express from "express";
 import { publicRouter } from "../router/PublicRouter.js";
 import { errorMiddleware } from "../middleware/ErrorMiddleware.js";
-import { userRouter } from "../router/apiRouter.js";
+import { userRouter } from "../router/authRouter.js";
 
 const app = express();
 

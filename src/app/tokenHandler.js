@@ -14,5 +14,6 @@ export const generateToken = (user_id) => {
 };
 
 export const validateToken = (token) => {
-	return jwt.verify(token, process.env.JWT_SECRET);
+	token = jwt.verify(token, process.env.JWT_SECRET);
+	return token;
 };
