@@ -1,5 +1,4 @@
 import userService from "../service/userService.js";
-import { userRegisterValidation } from "../validation/userValidation.js";
 
 const register = async (req, res, next) => {
 	try {
@@ -39,12 +38,11 @@ const getUser = async (req, res, next) => {
 
 const update = async (req, res, next) => {
 	try {
-		const file = req.file;
 		const userId = req.user[0].user_id;
 		req = req.body;
-		await userService.update(userId, req, file);
+		const result = await userService.update(userId, req);
 		res.status(200).json({
-			message: "Success update data",
+			data: result,
 		});
 	} catch (error) {
 		next(error);

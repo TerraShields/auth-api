@@ -24,7 +24,7 @@ const userLoginValidation = Joi.object({
 const userUpdateValidation = Joi.object({
 	email: Joi.string().email().max(100),
 	name: Joi.string().max(50),
-	address: Joi.string().max(50),
+	address: Joi.string().max(1000),
 });
 
 const changePasswordValidation = Joi.object({
