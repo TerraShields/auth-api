@@ -70,14 +70,32 @@
   PATCH {{url}}/api/auth/user
 ```
 
-| Parameter               | Type     | Description                                    |
-| :---------------------- | :------- | :--------------------------------------------- |
-| `name`                  | `string` | **Required**. enter your name                  |
-| `email`                 | `string` | **Required**. enter your email                 |
-| `password`              | `string` | **Required**. enter your password              |
-| `password_confirmation` | `string` | **Required**. enter your Password Confirmation |
-| `address`               | `string` | **Required**.                                  |
-| `image`                 | `string` | **Required**.                                  |
+| Parameter               | Type     | Description                         |
+| :---------------------- | :------- | :---------------------------------- |
+| `name`                  | `string` | max (50)                            |
+| `email`                 | `string` | must be email, max (100)            |
+| `password`              | `string` | min (6)                             |
+| `password_confirmation` | `string` | min (6), must be same with password |
+| `address`               | `string` |                                     |
+| `image`                 | `string` | type **jpg,jpeg,png max 10MB**      |
+
+- headers
+  - multipart/form-data
+- success return body
+
+```json
+{
+	"message": "success"
+}
+```
+
+- error return body
+
+```json
+{
+	"errors": "string"
+}
+```
 
 #### Change Password
 
