@@ -3,19 +3,19 @@ steps:
     args:
       - "build"
       - "-t"
-      - "asia-southeast2-docker.pkg.dev/$PROJECT_ID/backend-dev/haptani-image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
       - "."
   - name: gcr.io/cloud-builders/docker
     args:
       - "push"
-      - "asia-southeast2-docker.pkg.dev/$PROJECT_ID/backend-dev/haptani-image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: gcloud
     args:
       - "run"
       - "deploy"
       - "api-service-backend"
-      - "--image=asia-southeast2-docker.pkg.dev/$PROJECT_ID/backend-dev/haptani-image"
+      - "--image=us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
       - "--region=us-central1"
       - "--cpu=1"
       - "--memory=2048Mi"
@@ -26,5 +26,5 @@ steps:
       - "--set-secrets=JWT_EXPIRES=JWT_EXPIRES:latest"
       - "--set-secrets=JWT_SECRET=JWT_SECRET:latest"
 images:
-  - "asia-southeast2-docker.pkg.dev/$PROJECT_ID/backend-dev/haptani-image"
+  - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
 logsBucket: "gs://capstone-bucket-bangkit-2024/logs"
