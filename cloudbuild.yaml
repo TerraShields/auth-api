@@ -3,19 +3,19 @@ steps:
     args:
       - "build"
       - "-t"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project-dev/haptani-image-dev"
       - "."
   - name: gcr.io/cloud-builders/docker
     args:
       - "push"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project-dev/haptani-image-dev"
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: gcloud
     args:
       - "run"
       - "deploy"
       - "api-service-backend"
-      - "--image=us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
+      - "--image=us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project-dev/haptani-image-dev"
       - "--region=us-central1"
       - "--cpu=1"
       - "--memory=2048Mi"
