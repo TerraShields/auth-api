@@ -20,6 +20,11 @@ steps:
       - "--cpu=1"
       - "--memory=2048Mi"
       - "--allow-unauthenticated"
+      - "--set-secrets=GCP_BUCKET_FOLDER=GCP_BUCKET_FOLDER:latest"
+      - "--set-secrets=GCP_BUCKET_NAME=GCP_BUCKET_NAME:latest"
+      - "--set-secrets=GCP_BUCKET_ID=GCP_BUCKET_ID:latest"
+      - "--set-secrets=JWT_EXPIRES=JWT_EXPIRES:latest"
+      - "--set-secrets=JWT_SECRET=JWT_SECRET:latest"
 images:
   - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
 logsBucket: "gs://capstone-bucket-bangkit-2024/logs"
