@@ -83,8 +83,6 @@
 | :---------------------- | :------- | :--------------------------------------------- |
 | `name`                  | `string` | **Required**. enter your name                  |
 | `email`                 | `string` | **Required**. enter your email                 |
-| `password`              | `string` | **Required**. enter your password              |
-| `password_confirmation` | `string` | **Required**. enter your Password Confirmation |
 | `address`               | `string` | **Required**.                                  |
 | `image`                 | `string` | **Required**.                                  |
 
