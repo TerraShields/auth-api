@@ -1,5 +1,9 @@
 ## TerraShields Auth API
 
+### NOTE
+- all url need Bearer token except [Login](https://github.com/TerraShields/auth-api?tab=readme-ov-file#login) and [Register](https://github.com/TerraShields/auth-api?tab=readme-ov-file#register)
+- all **Content-Type** are **application/json** except [Update](https://github.com/TerraShields/auth-api?tab=readme-ov-file#update-user)
+  
 ### BASE URL
 - https://api-service-backend-tpercgplna-uc.a.run.app
 
@@ -67,7 +71,9 @@
 }
 ```
 
-#### Update User (Development)
+#### Update User
+
+- Content-Type: multipart/form-data
 
 ```http
   PATCH {{url}}/api/auth/user
@@ -81,6 +87,22 @@
 | `password_confirmation` | `string` | **Required**. enter your Password Confirmation |
 | `address`               | `string` | **Required**.                                  |
 | `image`                 | `string` | **Required**.                                  |
+
+- success return body
+
+```json
+{
+	"message": "update data"
+}
+```
+
+- error return body
+
+```json
+{
+	"errors": "string"
+}
+```
 
 #### Change Password
 
