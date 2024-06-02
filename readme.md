@@ -1,5 +1,8 @@
 ## TerraShields Auth API
 
+### BASE URL
+- https://api-service-backend-tpercgplna-uc.a.run.app
+
 #### Login
 
 ```http
