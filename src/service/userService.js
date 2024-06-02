@@ -13,6 +13,8 @@ import { v4 as uuid } from "uuid";
 import { Storage } from "@google-cloud/storage";
 import dotenv from "dotenv";
 import fs from "fs";
+import { oauth2Client } from "../app/oauth.js";
+import { google } from "googleapis";
 
 dotenv.config();
 
@@ -158,4 +160,39 @@ const changePassword = async (userId, req) => {
 	});
 };
 
-export default { register, login, update, changePassword };
+const googleAuth = async (code) => {
+	const { tokens } = await oauth2Client.getToken(code);
+
+	oauth2Client.setCredentials(tokens);
+
+	const oauth2 = google.oauth2({
+		auth: oauth2Client,
+		version: "v2",
+	});
+	const { data } = await oauth2.userinfo.get();
+
+	const userCheck = await userCollection.where("email", "==", data.email).get();
+
+	let dataUser = {};
+
+	dataUser.user_id = data.id;
+	dataUser.name = data.name;
+	dataUser.password = "";
+	dataUser.address = "";
+	dataUser.image = data.picture;
+	dataUser.email = data.email;
+
+	const token = generateToken(dataUser.user_id);
+
+	if (!userCheck.empty) {
+		return { token };
+	}
+
+	await userCollection.doc(dataUser.user_id).set(dataUser);
+
+	return {
+		token,
+	};
+};
+
+export default { register, login, update, changePassword, googleAuth };
