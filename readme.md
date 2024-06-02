@@ -123,3 +123,18 @@
 | Parameter | Type     | Description    |
 | :-------- | :------- | :------------- |
 | `Token`   | `string` | Bearer <token> |
+
+- success return body
+
+```json
+{
+	"data": {
+		"image": "https://storage.googleapis.com/capstone-bucket-bangkit-2024/users_image/user-default-image.png",
+		"password": "$2b$10$MemXhuCYwRMmVkkBcR2cMuuWXhze3GedS7Qu0sh0sEaUEI7xDUoLS",
+		"address": "",
+		"user_id": "user-941706e1-89cc-4f41-928e-fb186a112cea",
+		"name": "user tampan",
+		"email": "user@gmail.com"
+	}
+}
+```
