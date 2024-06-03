@@ -129,15 +129,22 @@ const update = async (userId, req, file) => {
 			return doc.data();
 		});
 
-		let image = user[0].image;
-		image = image.split("/");
-		const imageLength = image.length - 1;
-		const oldUserImage = image[imageLength];
+		const image = user[0].image;
+		const imageSplit = image.split("/");
+		const imageLength = imageSplit.length - 1;
+		const oldUserImage = imageSplit[imageLength];
 
-		if (oldUserImage !== "user-default-image.png") {
-			await gcs
-				.file(`${process.env.GCP_BUCKET_FOLDER}/${oldUserImage}`)
-				.delete();
+		const selectiveUserId = user[0].user_id.split("-")[1];
+		const selectiveUserImage = image.includes(
+			`${process.env.GCP_BUCKET_NAME}/${process.env.GCP_BUCKET_FOLDER}`
+		);
+
+		if (selectiveUserId !== undefined && selectiveUserImage) {
+			if (oldUserImage !== "user-default-image.png") {
+				await gcs
+					.file(`${process.env.GCP_BUCKET_FOLDER}/${oldUserImage}`)
+					.delete();
+			}
 		}
 
 		fs.unlink(`${filePath}`, (err) => {
