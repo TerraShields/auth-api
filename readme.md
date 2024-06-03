@@ -12,7 +12,7 @@
 ### Login with google account
 
 ```http
-  POST {{url}}/api/auth/google
+  GET {{url}}/api/auth/google
 ```
 
 - success return body
