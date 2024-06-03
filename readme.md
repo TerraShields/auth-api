@@ -1,11 +1,33 @@
 ## TerraShields Auth API
 
 ### NOTE
+
 - all url need Bearer token except [Login](https://github.com/TerraShields/auth-api?tab=readme-ov-file#login) and [Register](https://github.com/TerraShields/auth-api?tab=readme-ov-file#register)
 - all **Content-Type** are **application/json** except [Update](https://github.com/TerraShields/auth-api?tab=readme-ov-file#update-user)
-  
+
 ### BASE URL
+
 - https://api-service-backend-tpercgplna-uc.a.run.app
+
+### Login with google account
+
+- success return body
+
+```json
+{
+	"data": {
+		"token": "string"
+	}
+}
+```
+
+- error return body
+
+```json
+{
+	"errors": "string"
+}
+```
 
 #### Login
 
@@ -79,12 +101,12 @@
   PATCH {{url}}/api/auth/user
 ```
 
-| Parameter               | Type     | Description                                    |
-| :---------------------- | :------- | :--------------------------------------------- |
-| `name`                  | `string` | **Required**. enter your name                  |
-| `email`                 | `string` | **Required**. enter your email                 |
-| `address`               | `string` | **Required**.                                  |
-| `image`                 | `string` | **Required**.                                  |
+| Parameter | Type     | Description                    |
+| :-------- | :------- | :----------------------------- |
+| `name`    | `string` | **Required**. enter your name  |
+| `email`   | `string` | **Required**. enter your email |
+| `address` | `string` | **Required**.                  |
+| `image`   | `string` | **Required**.                  |
 
 - success return body
 
