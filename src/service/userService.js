@@ -13,6 +13,8 @@ import { v4 as uuid } from "uuid";
 import { Storage } from "@google-cloud/storage";
 import dotenv from "dotenv";
 import fs from "fs";
+import { oauth2Client } from "../app/oauth.js";
+import { google } from "googleapis";
 
 dotenv.config();
 
@@ -127,15 +129,22 @@ const update = async (userId, req, file) => {
 			return doc.data();
 		});
 
-		let image = user[0].image;
-		image = image.split("/");
-		const imageLength = image.length - 1;
-		const oldUserImage = image[imageLength];
+		const image = user[0].image;
+		const imageSplit = image.split("/");
+		const imageLength = imageSplit.length - 1;
+		const oldUserImage = imageSplit[imageLength];
 
-		if (oldUserImage !== "user-default-image.png") {
-			await gcs
-				.file(`${process.env.GCP_BUCKET_FOLDER}/${oldUserImage}`)
-				.delete();
+		const selectiveUserId = user[0].user_id.split("-")[1];
+		const selectiveUserImage = image.includes(
+			`${process.env.GCP_BUCKET_NAME}/${process.env.GCP_BUCKET_FOLDER}`
+		);
+
+		if (selectiveUserId !== undefined && selectiveUserImage) {
+			if (oldUserImage !== "user-default-image.png") {
+				await gcs
+					.file(`${process.env.GCP_BUCKET_FOLDER}/${oldUserImage}`)
+					.delete();
+			}
 		}
 
 		fs.unlink(`${filePath}`, (err) => {
@@ -158,4 +167,39 @@ const changePassword = async (userId, req) => {
 	});
 };
 
-export default { register, login, update, changePassword };
+const googleAuth = async (code) => {
+	const { tokens } = await oauth2Client.getToken(code);
+
+	oauth2Client.setCredentials(tokens);
+
+	const oauth2 = google.oauth2({
+		auth: oauth2Client,
+		version: "v2",
+	});
+	const { data } = await oauth2.userinfo.get();
+
+	const userCheck = await userCollection.where("email", "==", data.email).get();
+
+	let dataUser = {};
+
+	dataUser.user_id = data.id;
+	dataUser.name = data.name;
+	dataUser.password = "";
+	dataUser.address = "";
+	dataUser.image = data.picture;
+	dataUser.email = data.email;
+
+	const token = generateToken(dataUser.user_id);
+
+	if (!userCheck.empty) {
+		return { token };
+	}
+
+	await userCollection.doc(dataUser.user_id).set(dataUser);
+
+	return {
+		token,
+	};
+};
+
+export default { register, login, update, changePassword, googleAuth };

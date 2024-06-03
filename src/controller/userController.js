@@ -1,5 +1,6 @@
 import userService from "../service/userService.js";
-import { userRegisterValidation } from "../validation/userValidation.js";
+import { authorizationURL, oauth2Client } from "../app/oauth.js";
+import { google } from "googleapis";
 
 const register = async (req, res, next) => {
 	try {
@@ -64,4 +65,33 @@ const changePassword = async (req, res, next) => {
 	}
 };
 
-export default { register, login, getUser, update, changePassword };
+const googleAuth = (req, res, next) => {
+	try {
+		res.redirect(authorizationURL);
+	} catch (error) {
+		next(error);
+	}
+};
+
+const googleAuthCallback = async (req, res, next) => {
+	try {
+		const { code } = req.query;
+
+		const result = await userService.googleAuth(code);
+		res.status(200).json({
+			data: result,
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export default {
+	register,
+	login,
+	getUser,
+	update,
+	changePassword,
+	googleAuth,
+	googleAuthCallback,
+};
