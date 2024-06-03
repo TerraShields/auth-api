@@ -25,6 +25,8 @@ steps:
       - "--set-secrets=GCP_PROJECT_ID=GCP_PROJECT_ID:latest"
       - "--set-secrets=JWT_EXPIRES=JWT_EXPIRES:latest"
       - "--set-secrets=JWT_SECRET=JWT_SECRET:latest"
+      - "--set-secrets=GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest"
+      - "--set-secrets=GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest"
 images:
   - "us-central1-docker.pkg.dev/$PROJECT_ID/capstone-project/haptani-image"
 logsBucket: "gs://capstone-bucket-bangkit-2024/logs"
