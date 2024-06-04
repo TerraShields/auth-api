@@ -202,4 +202,20 @@ const googleAuth = async (code) => {
 	};
 };
 
-export default { register, login, update, changePassword, googleAuth };
+const getUser = async (userId, user) => {
+	userId = userId.split("-")[0];
+
+	if (userId !== "user") {
+		user.status = "oauth";
+		return {
+			user,
+		};
+	} else {
+		user.status = "!oauth";
+		return {
+			user,
+		};
+	}
+};
+
+export default { register, login, update, changePassword, googleAuth, getUser };

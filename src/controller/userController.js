@@ -1,6 +1,5 @@
 import userService from "../service/userService.js";
 import { authorizationURL, oauth2Client } from "../app/oauth.js";
-import { google } from "googleapis";
 
 const register = async (req, res, next) => {
 	try {
@@ -30,8 +29,11 @@ const login = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
 	try {
+		const userId = req.user[0].user_id;
+		const user = req.user[0];
+		const result = await userService.getUser(userId, user);
 		res.status(200).json({
-			data: req.user[0],
+			data: result,
 		});
 	} catch (error) {
 		next(error);
