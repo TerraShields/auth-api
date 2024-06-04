@@ -11,6 +11,10 @@
 
 ### Login with google account
 
+```http
+  GET {{url}}/api/auth/google
+```
+
 - success return body
 
 ```json
