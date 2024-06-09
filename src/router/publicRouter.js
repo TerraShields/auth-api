@@ -1,7 +1,6 @@
 import express from "express";
 import userController from "../controller/userController.js";
 import reportController from "../controller/reportController.js";
-import { reportRouter } from "./reportRouter.js";
 
 const publicRouter = new express.Router();
 
@@ -14,6 +13,6 @@ publicRouter.get(
 	userController.googleAuthCallback
 );
 
-reportRouter.delete("/api/report/delete", reportController.softDelete);
+publicRouter.delete("/api/report/delete", reportController.softDelete);
 
 export { publicRouter };
