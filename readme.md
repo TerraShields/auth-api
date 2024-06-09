@@ -176,13 +176,90 @@
 {
 	"data": {
 		"user": {
-			"image": "https://storage.googleapis.com/capstone-bucket-bangkit-2024/users_image/user-default-image.png",
-			"password": "$2b$10$MemXhuCYwRMmVkkBcR2cMuuWXhze3GedS7Qu0sh0sEaUEI7xDUoLS",
-			"address": "",
-			"user_id": "user-941706e1-89cc-4f41-928e-fb186a112cea",
-			"name": "user tampan",
-			"email": "user@gmail.com"
+			"image": "string",
+			"password": "string",
+			"address": "string",
+			"user_id": "string",
+			"name": "string",
+			"email": "string"
 		}
+	}
+}
+```
+
+#### Post Report
+
+```http
+  POST {{url}}/api/report
+```
+
+| Parameter     | Type     | Description        |
+| :------------ | :------- | :----------------- |
+| `Token`       | `string` | Bearer <token>     |
+| `longitude`   | `string` | required           |
+| `latitude`    | `string` | required           |
+| `description` | `string` | required           |
+| `image`       | `string` | required, max 10MB |
+| `sign`        | `string` | required           |
+
+- success return body
+
+```json
+{
+	"message": "success",
+	"data": {
+		"report_id": "string",
+		"user_id": "string",
+		"latitude": "string",
+		"longitude": "string",
+		"image": "string",
+		"description": "string",
+		"sign": "string"
+	}
+}
+```
+
+#### Get Report
+
+```http
+  GET {{url}}/api/report
+```
+
+| Parameter | Type      | Description               |
+| :-------- | :-------- | :------------------------ |
+| `Token`   | `string`  | Bearer <token>            |
+| `page`    | `integer` | query parameter, required |
+| `size`    | `integer` | query parameter, required |
+
+- success return body
+
+```json
+{
+	"data": [
+		{
+			"report_id": "string",
+			"user_id": "string",
+			"latitude": "string",
+			"longitude": "string",
+			"image": "string",
+			"description": "string",
+			"sign": "string"
+		},
+		{
+			"report_id": "string",
+			"user_id": "string",
+			"latitude": "string",
+			"longitude": "string",
+			"image": "string",
+			"description": "string",
+			"sign": "string"
+		}
+	],
+	"paging": {
+		"total_item": "integer",
+		"total_page": "integer",
+		"page": "integer",
+		"size": "integer"
 	}
 }
 ```
