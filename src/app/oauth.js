@@ -1,8 +1,9 @@
 import { google } from "googleapis";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "./const.js";
 
 export const oauth2Client = new google.auth.OAuth2(
-	process.env.GOOGLE_CLIENT_ID,
-	process.env.GOOGLE_CLIENT_SECRET,
+	process.env.GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID,
+	process.env.GOOGLE_CLIENT_SECRET || GOOGLE_CLIENT_SECRET,
 	"https://api-service-backend-tpercgplna-uc.a.run.app/api/auth/google/callback"
 );
 

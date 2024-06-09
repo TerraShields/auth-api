@@ -2,7 +2,6 @@ import express from "express";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import userController from "../controller/userController.js";
 import { imageHandler } from "../app/imageHandler.js";
-import { errorMiddleware } from "../middleware/errorMiddleware.js";
 
 const userRouter = new express.Router();
 

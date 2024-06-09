@@ -58,7 +58,7 @@ const changePassword = async (req, res, next) => {
 	try {
 		const userId = req.user[0].user_id;
 		req = req.body;
-		const result = await userService.changePassword(userId, req);
+		await userService.changePassword(userId, req);
 		res.status(200).json({
 			message: "Success update password",
 		});

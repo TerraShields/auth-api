@@ -10,11 +10,12 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../app/tokenHandler.js";
 import { userCollection } from "../app/firestore.js";
 import { v4 as uuid } from "uuid";
-import { Storage } from "@google-cloud/storage";
 import dotenv from "dotenv";
-import fs from "fs";
 import { oauth2Client } from "../app/oauth.js";
 import { google } from "googleapis";
+import { getBucketName, storage, storagePath } from "../app/cloudStorage.js";
+import { unlinkFIle } from "../app/util.js";
+import { GCP_BUCKET_FOLDER, GCP_BUCKET_NAME } from "../app/const.js";
 
 dotenv.config();
 
@@ -106,16 +107,16 @@ const update = async (userId, req, file) => {
 	}
 
 	if (file !== undefined) {
-		const storage = new Storage({ projectId: process.env.GCP_PROJECT_ID });
-		const bucketName = process.env.GCP_BUCKET_NAME;
 		const filePath = file.path;
 		const fileName = file.filename;
 
 		// store to buckets
-		const gcs = storage.bucket(bucketName);
-		const storagepath = `${process.env.GCP_BUCKET_FOLDER}/${fileName}`;
+		const gcs = getBucketName(process.env.GCP_BUCKET_NAME || GCP_BUCKET_NAME);
 		await gcs.upload(filePath, {
-			destination: storagepath,
+			destination: storagePath(
+				process.env.GCP_BUCKET_FOLDER || GCP_BUCKET_FOLDER,
+				fileName
+			),
 			predefinedAcl: "publicRead",
 			metadata: {
 				contentType: file.mimetype,
@@ -136,23 +137,29 @@ const update = async (userId, req, file) => {
 
 		const selectiveUserId = user[0].user_id.split("-")[1];
 		const selectiveUserImage = image.includes(
-			`${process.env.GCP_BUCKET_NAME}/${process.env.GCP_BUCKET_FOLDER}`
+			`${process.env.GCP_BUCKET_NAME || GCP_BUCKET_NAME}/${
+				process.env.GCP_BUCKET_FOLDER || GCP_BUCKET_FOLDER
+			}`
 		);
 
 		if (selectiveUserId !== undefined && selectiveUserImage) {
 			if (oldUserImage !== "user-default-image.png") {
 				await gcs
-					.file(`${process.env.GCP_BUCKET_FOLDER}/${oldUserImage}`)
+					.file(
+						`${
+							process.env.GCP_BUCKET_FOLDER || GCP_BUCKET_FOLDER
+						}/${oldUserImage}`
+					)
 					.delete();
 			}
 		}
 
-		fs.unlink(`${filePath}`, (err) => {
-			if (err) throw new ResponseError(err.status, err.message);
-		});
+		unlinkFIle(filePath);
 
 		await userCollection.doc(userId).update({
-			image: `https://storage.googleapis.com/${process.env.GCP_BUCKET_NAME}/${process.env.GCP_BUCKET_FOLDER}/${fileName}`,
+			image: `https://storage.googleapis.com/${
+				process.env.GCP_BUCKET_NAME || GCP_BUCKET_NAME
+			}/${process.env.GCP_BUCKET_FOLDER || GCP_BUCKET_FOLDER}/${fileName}`,
 		});
 	}
 };
