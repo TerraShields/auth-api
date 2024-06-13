@@ -1,21 +1,5 @@
 import reportService from "../service/reportService.js";
 
-const storeReport = async (req, res, next) => {
-	try {
-		const userId = req.user[0].user_id;
-		const file = req.file;
-		const request = req.body;
-
-		const data = await reportService.storeReport(request, userId, file);
-		res.status(200).json({
-			message: "success",
-			data: data[0],
-		});
-	} catch (error) {
-		next(error);
-	}
-};
-
 const getListReport = async (req, res, next) => {
 	try {
 		const userId = req.user[0].user_id;
@@ -45,4 +29,4 @@ const softDelete = async (req, res, next) => {
 	}
 };
 
-export default { storeReport, getListReport, softDelete };
+export default { getListReport, softDelete };

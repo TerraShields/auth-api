@@ -1,83 +1,11 @@
-import { getBucketName, storagePath } from "../app/cloudStorage.js";
 import { deletedReportCollection, reportCollection } from "../app/firestore.js";
-import { getCurrentTime, deleteCountdown, unlinkFIle } from "../app/util.js";
-import { storeReportValidation } from "../validation/reportValidation.js";
-import { validation } from "../validation/validation.js";
-import { v4 as uuid } from "uuid";
+import { getCurrentTime } from "../app/util.js";
 import dotenv from "dotenv";
-import {
-	GCP_BUCKET_FOLDER,
-	GCP_BUCKET_NAME,
-	GCP_REPORT_BUCKET_FOLDER,
-} from "../app/const.js";
 dotenv.config();
 
-const storeReport = async (req, userId, file) => {
-	req = validation(storeReportValidation, req);
-
-	const filePath = file.path;
-	const fileName = file.filename;
-
-	let gcs = getBucketName(process.env.GCP_BUCKET_NAME || GCP_BUCKET_NAME);
-
-	await gcs.upload(filePath, {
-		destination: storagePath(
-			process.env.GCP_REPORT_BUCKET_FOLDER || GCP_REPORT_BUCKET_FOLDER,
-			fileName
-		),
-		predefinedAcl: "publicRead",
-		metadata: {
-			contentType: file.mimetype,
-		},
-	});
-
-	unlinkFIle(filePath);
-
-	req.report_id = `report-${uuid()}`;
-	req.user_id = userId;
-	req.image = `https://storage.googleapis.com/${
-		process.env.GCP_BUCKET_NAME || GCP_BUCKET_NAME
-	}/${
-		process.env.GCP_REPORT_BUCKET_FOLDER || GCP_REPORT_BUCKET_FOLDER
-	}/${fileName}`;
-
-	req.created_at = getCurrentTime();
-	req.delete_countdown = deleteCountdown();
-
-	await reportCollection.doc(req.report_id).set(req);
-
-	const getReport = await reportCollection
-		.where("report_id", "==", req.report_id)
-		.where("user_id", "==", req.user_id)
-		.get();
-
-	const data = getReport.docs.map((doc) => {
-		const {
-			report_id,
-			user_id,
-			latitude,
-			longitude,
-			image,
-			description,
-			sign,
-		} = doc.data();
-		return {
-			report_id,
-			user_id,
-			latitude,
-			longitude,
-			image,
-			description,
-			sign,
-		};
-	});
-
-	return data;
-};
-
 const getListReport = async (req, userId) => {
-	const limit = Number(req.size);
-	const page = Number(req.page);
+	const limit = Number(req.size) || 10;
+	const page = Number(req.page) || 1;
 	let lastVisible = null;
 
 	let query = reportCollection.where("user_id", "==", userId).limit(limit);
@@ -105,6 +33,7 @@ const getListReport = async (req, userId) => {
 			description,
 			sign,
 			created_at,
+			classification_result,
 		} = doc.data();
 		return {
 			report_id,
@@ -115,6 +44,7 @@ const getListReport = async (req, userId) => {
 			description,
 			sign,
 			created_at,
+			classification_result,
 		};
 	});
 
@@ -148,4 +78,4 @@ const softDelete = async () => {
 	});
 };
 
-export default { storeReport, getListReport, softDelete };
+export default { getListReport, softDelete };
