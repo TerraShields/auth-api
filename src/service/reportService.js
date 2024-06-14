@@ -46,8 +46,6 @@ const getListReport = async (req, userId) => {
 		};
 	});
 
-	console.log(data);
-
 	let totalItems = await reportCollection.where("user_id", "==", userId).get();
 	totalItems = totalItems.size;
 
