@@ -237,22 +237,30 @@
 {
 	"data": [
 		{
-			"report_id": "string",
-			"user_id": "string",
-			"latitude": "string",
-			"longitude": "string",
-			"image": "string",
-			"description": "string",
-			"sign": "string"
+			"report_id": "report-f15d83f8-d695-4dec-869e-60d413ce42ed",
+			"user_id": "user-2a35342b-2f66-46fc-b6b1-0dee64f0cac8",
+			"image": "https://storage.googleapis.com/capstone-bucket-bangkit-2024/reports/fc1c9e33-fe87-434a-a5e3-4423dfdcc41f.jpeg",
+			"description": "",
+			"sign": "string",
+			"created_at": "2024-06-14T22:09:34.549283Z",
+			"classification_result": "earthworms"
+			"location": {
+				"_latitude": 90,
+				"_longitude": 180
+			},
 		},
 		{
-			"report_id": "string",
-			"user_id": "string",
-			"latitude": "string",
-			"longitude": "string",
-			"image": "string",
-			"description": "string",
-			"sign": "string"
+			"report_id": "report-f15d83f8-d695-4dec-869e-60d413ce42ed",
+			"user_id": "user-2a35342b-2f66-46fc-b6b1-0dee64f0cac8",
+			"image": "https://storage.googleapis.com/capstone-bucket-bangkit-2024/reports/fc1c9e33-fe87-434a-a5e3-4423dfdcc41f.jpeg",
+			"description": "",
+			"sign": "string",
+			"created_at": "2024-06-14T22:09:34.549283Z",
+			"classification_result": "earthworms"
+			"location": {
+				"_latitude": 90,
+				"_longitude": 180
+			},
 		}
 	],
 	"paging": {

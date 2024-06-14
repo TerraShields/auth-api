@@ -27,26 +27,26 @@ const getListReport = async (req, userId) => {
 		const {
 			report_id,
 			user_id,
-			latitude,
-			longitude,
 			image,
 			description,
 			sign,
 			created_at,
 			classification_result,
+			location,
 		} = doc.data();
 		return {
 			report_id,
 			user_id,
-			latitude,
-			longitude,
 			image,
 			description,
 			sign,
 			created_at,
 			classification_result,
+			location,
 		};
 	});
+
+	console.log(data);
 
 	let totalItems = await reportCollection.where("user_id", "==", userId).get();
 	totalItems = totalItems.size;
