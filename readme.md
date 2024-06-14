@@ -243,7 +243,8 @@
 			"longitude": "string",
 			"image": "string",
 			"description": "string",
-			"sign": "string"
+			"sign": "string",
+			"classification_result": "string",
 		},
 		{
 			"report_id": "string",
@@ -252,7 +253,8 @@
 			"longitude": "string",
 			"image": "string",
 			"description": "string",
-			"sign": "string"
+			"sign": "string",
+			"classification_result": "string",
 		}
 	],
 	"paging": {
