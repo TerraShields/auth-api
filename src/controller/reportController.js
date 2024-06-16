@@ -6,6 +6,7 @@ const getListReport = async (req, res, next) => {
 		const request = {
 			page: req.query.page,
 			size: req.query.size,
+			location: req.query.location,
 		};
 
 		const result = await reportService.getListReport(request, userId);
