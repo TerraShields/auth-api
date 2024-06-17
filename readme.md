@@ -7,7 +7,7 @@
 
 ### BASE URL
 
-- https://api-service-backend-tpercgplna-uc.a.run.app
+- 
 
 ### Login with google account
 
