@@ -36,6 +36,7 @@ const getListReport = async (req, userId) => {
 				description,
 				sign,
 				created_at,
+				prediction,
 				classification_result,
 				location,
 			} = doc.data();
@@ -46,6 +47,7 @@ const getListReport = async (req, userId) => {
 				description,
 				sign,
 				created_at,
+				prediction,
 				classification_result,
 				location,
 			};
@@ -59,6 +61,7 @@ const getListReport = async (req, userId) => {
 				description,
 				sign,
 				created_at,
+				prediction,
 				classification_result,
 				location,
 			} = doc.data();
@@ -78,6 +81,7 @@ const getListReport = async (req, userId) => {
 				description,
 				sign,
 				created_at,
+				prediction,
 				classification_result,
 				location: modifiedLocation,
 			};
