@@ -243,7 +243,18 @@
 			"description": "",
 			"sign": "string",
 			"created_at": "2024-06-14T22:09:34.549283Z",
-			"classification_result": "earthworms"
+			"classification_result": "earthworms",
+			"prediction": {
+				            "C": 0.0,
+				            "E": 0.0,
+				            "N": 0.0,
+				            "NE": 0.0,
+				            "NW": 0.0,
+				            "S": 0.0,
+				            "SE": 1.0,
+				            "SW": 0.0,
+				            "W": 0.0
+			},
 			"location": {
 				"_latitude": 90,
 				"_longitude": 180
