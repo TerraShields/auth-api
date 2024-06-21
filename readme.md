@@ -7,7 +7,7 @@
 
 ### BASE URL
 
-- 
+-
 
 ### Login with google account
 
@@ -225,13 +225,16 @@
   GET {{url}}/api/report
 ```
 
-| Parameter | Type      | Description               |
-| :-------- | :-------- | :------------------------ |
-| `Token`   | `string`  | Bearer <token>            |
-| `page`    | `integer` | query parameter, required |
-| `size`    | `integer` | query parameter, required |
+| Parameter  | Type      | Description                            |
+| :--------- | :-------- | :------------------------------------- |
+| `Token`    | `string`  | Bearer <token>                         |
+| `page`     | `integer` | query parameter, optional, default =1  |
+| `size`     | `integer` | query parameter, optional, default =10 |
+| `location` | `integer` | query parameter, optional, default = 0 |
 
-- success return body
+- parameter location hanya bisa diisi 0 atau 1, jika 0 maka hanya data pertama yang locationnya tampil, jika diisi 1 maka semua data akan diperlihatkan locationnya
+
+* success return body
 
 ```json
 {
@@ -245,20 +248,20 @@
 			"created_at": "2024-06-14T22:09:34.549283Z",
 			"classification_result": "earthworms",
 			"prediction": {
-				            "C": 0.0,
-				            "E": 0.0,
-				            "N": 0.0,
-				            "NE": 0.0,
-				            "NW": 0.0,
-				            "S": 0.0,
-				            "SE": 1.0,
-				            "SW": 0.0,
-				            "W": 0.0
+				"C": 0.0,
+				"E": 0.0,
+				"N": 0.0,
+				"NE": 0.0,
+				"NW": 0.0,
+				"S": 0.0,
+				"SE": 1.0,
+				"SW": 0.0,
+				"W": 0.0
 			},
 			"location": {
 				"_latitude": 90,
 				"_longitude": 180
-			},
+			}
 		},
 		{
 			"report_id": "report-f15d83f8-d695-4dec-869e-60d413ce42ed",
@@ -269,20 +272,20 @@
 			"created_at": "2024-06-14T22:09:34.549283Z",
 			"classification_result": "earthworms",
 			"prediction": {
-				            "C": 0.0,
-				            "E": 0.0,
-				            "N": 0.0,
-				            "NE": 0.0,
-				            "NW": 0.0,
-				            "S": 0.0,
-				            "SE": 1.0,
-				            "SW": 0.0,
-				            "W": 0.0
+				"C": 0.0,
+				"E": 0.0,
+				"N": 0.0,
+				"NE": 0.0,
+				"NW": 0.0,
+				"S": 0.0,
+				"SE": 1.0,
+				"SW": 0.0,
+				"W": 0.0
 			},
 			"location": {
 				"_latitude": 90,
 				"_longitude": 180
-			},
+			}
 		}
 	],
 	"paging": {
